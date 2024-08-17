@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git credentialsId: 'your-git-credentials', url: 'https://github.com/your-username/your-repo-name.git'
+            }
+        }
+        stage('Terraform Init') {
+            steps {
+                dir('path/to/your/terraform/code') { // <--- Add this line
+                    sh 'terraform init'
+                }
+            }
+        }
+        stage('Terraform Apply') {
+            steps {
+                dir('path/to/your/terraform/code') { // <--- Add this line
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+    }
+}

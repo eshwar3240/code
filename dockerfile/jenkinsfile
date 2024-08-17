@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = "eshwar0519/flask-app:${env.BUILD_NUMBER}"
+        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials-id'  // Replace with your Docker Hub credentials ID
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/eshwar3240/test.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image and assign it to a variable accessible in other stages
+                    dockerImage = docker.build("${DOCKER_IMAGE}")
+                }
+            }
+        }
+
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    // Use the dockerImage variable to push the image
+                    docker.withRegistry('https://registry.hub.docker.com', "${DOCKER_CREDENTIALS_ID}") {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Docker image built and pushed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+            // Add notification steps here (e.g., email, Slack notification)
+        }
+    }
+}
