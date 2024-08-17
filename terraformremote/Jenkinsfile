@@ -4,19 +4,19 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'your-git-credentials', url: 'https://github.com/your-username/your-repo-name.git'
+                  git branch: 'master', url: 'https://github.com/eshwar3240/code.git'
             }
         }
         stage('Terraform Init') {
             steps {
-                dir('path/to/your/terraform/code') { // <--- Add this line
+                dir('./terraformremote') { 
                     sh 'terraform init'
                 }
             }
         }
         stage('Terraform Apply') {
             steps {
-                dir('path/to/your/terraform/code') { // <--- Add this line
+                dir('./terraformremote'){ 
                     sh 'terraform apply -auto-approve'
                 }
             }
