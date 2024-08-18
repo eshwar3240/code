@@ -20,10 +20,3 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 # Create the Kubernetes cluster
 kops create cluster --name eshwar.k8s.local --state="$KOPS_STATE_STORE" --zones ap-south-1a --node-count 3 --node-size t3.small --control-plane-size t3.medium --dns-zone eshwar.k8s.local
 
-# Update the cluster
-kops update cluster --name eshwar.k8s.local --yes --admin
-
-wait 2m
-
-# Validate the cluster
-kops validate cluster --name eshwar.k8s.local
