@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "eshwar_kops_state_store" {
 
 resource "aws_key_pair" "example" {
   key_name   = "eshwar1"  # Replace with your desired key name
-  public_key = file("~/.ssh/eshwar1.pub")  # Replace with the path to your public key file
+  public_key = file("/root/.ssh/eshwar1.pub")  # Replace with the path to your public key file
 }
 
 # Create an IAM role for EC2 with necessary permissions
