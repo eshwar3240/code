@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "eshwar_kops_state_store" {
 
 resource "aws_key_pair" "example" {
   key_name   = "eshwar1"  # Replace with your desired key name
-  public_key = file("/root/.ssh/eshwar1.pub")  # Replace with the path to your public key file
+  public_key = file("/var/lib/jenkins/.ssh/eshwar1.pub")  # Replace with the path to your public key file
 }
 
 # Create an IAM role for EC2 with necessary permissions
@@ -111,7 +111,7 @@ resource "null_resource" "eshwar_kops_cluster" {
     connection {
       type        = "ssh"
       user        = "ec2-user"  # Change this based on your AMI
-      private_key = file("/root/.ssh/eshwar1")  # Path to your private key
+      private_key = file("/var/lib/jenkins/.ssh/eshwar1")  # Path to your private key
       host        = aws_instance.eshwar_k8s_instance.public_ip  # Use the public IP of the instance
     }
   }
@@ -125,7 +125,7 @@ resource "null_resource" "eshwar_kops_cluster" {
     connection {
       type        = "ssh"
       user        = "ec2-user"  # Change this based on your AMI
-      private_key = file("/root/.ssh/eshwar")  # Path to your private key
+      private_key = file("/var/lib/jenkins/.ssh/eshwar1")  # Path to your private key
       host        = aws_instance.eshwar_k8s_instance.public_ip  # Use the public IP of the instance
     }
   }
