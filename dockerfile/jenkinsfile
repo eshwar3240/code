@@ -9,6 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                // Checkout the code from the Git repository
                 git branch: 'master', url: 'https://github.com/eshwar3240/code.git'
             }
         }
@@ -18,7 +19,7 @@ pipeline {
                 script {
                     try {
                         // Build the Docker image and assign it to a variable accessible in other stages
-                        dockerImage = docker.build("${DOCKER_IMAGE}")
+                        dockerImage = docker.build("${DOCKER_IMAGE}", "-f dockerfile/Dockerfile .")
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Docker image build failed: ${e.getMessage()}"
@@ -31,7 +32,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        // Use the dockerImage variable to push the image
+                        // Push the Docker image to Docker Hub
                         docker.withRegistry('https://registry.hub.docker.com', "${DOCKER_CREDENTIALS_ID}") {
                             dockerImage.push('latest')
                             dockerImage.push("${env.BUILD_NUMBER}")
